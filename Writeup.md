@@ -7,6 +7,8 @@
 * This can be achieved by pushing in new elements on one end and removing elements on the other end.
 * Solution: Lines 119 ~ 123 at `MidTermProject_Camera_Student.cpp`
 ```c++
+DataFrame frame;
+frame.cameraImg = imgGray;
  if( dataBuffer.size()+1>dataBufferSize)
 {
 	dataBuffer.erase(dataBuffer.begin());
@@ -14,21 +16,7 @@
 }
 dataBuffer.push_back(frame);
 ```
-* Solution code: Lines 120 ~ 130 at `MidTermProject_Camera_Student.cpp`
-```c++
-// push image into data frame buffer
-DataFrame frame;
-frame.cameraImg = imgGray;
 
-// ...add start: MP.1 Data Buffer Optimization
-if (  dataBuffer.size()+1 > dataBufferSize) 
-{
-    dataBuffer.erase(dataBuffer.begin());
-    cout << "REPLACE IMAGE IN BUFFER done" << endl;
-}
-// ...add end: MP.1 Data Buffer Optimization
- 
-```
 ### 2. Keypoints
 
 #### MP.2 Keypoint Detection
