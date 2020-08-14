@@ -171,31 +171,30 @@ void detKeypointsModern(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, std:
 ```
 
 #### MP.3 Keypoint Removal
-* Remove all keypoints outside of a pre-defined rectangle and only use the keypoints within the rectangle for further processing.
-* Solution code: Lines 105 ~ 264 at `MidTermProject_Camera_Student.cpp`
+* Remove all keypoints outside of a pre-defined rectangle and only use the keypoints within the rectangle.
+* Solution code: Lines 162 ~ 181 at `MidTermProject_Camera_Student.cpp`
 ```c++
-// ...add start: MP.3 Keypoint Removal
-vector<cv::KeyPoint>::iterator keypoint;
-vector<cv::KeyPoint> keypoints_roi;
-// ...add end: MP.3 Keypoint Removal
-
-if (bFocusOnVehicle)
-{
-    // ...add start: MP.3 Keypoint Removal
-    for(keypoint = keypoints.begin(); keypoint != keypoints.end(); ++keypoint)
-    {
-        if (vehicleRect.contains(keypoint->pt))
-        {  
-            cv::KeyPoint newKeyPoint;
-            newKeyPoint.pt = cv::Point2f(keypoint->pt);
-            newKeyPoint.size = 1;
-            keypoints_roi.push_back(newKeyPoint);
-        }
-    }
-
-    keypoints =  keypoints_roi;
-    cout << "IN ROI n= " << keypoints.size()<<" keypoints"<<endl;
-    // ...add end: MP.3 Keypoint Removal
+bool bFocusOnVehicle = true;
+                cv::Rect vehicleRect(535, 180, 180, 150);
+                //keypoint removal and roi
+                vector<cv::KeyPoint>::iterator keyptsptr;
+                vector<cv::KeyPoint> keypts_roi;
+                if (bFocusOnVehicle)
+                {
+                    //remove keypoints for roi
+                    for(keyptsptr = keypoints.begin(); keyptsptr != keypoints.end(); ++keyptsptr)
+                    {
+                        if (vehicleRect.contains(keyptsptr->pt))
+                        {  
+                            cv::KeyPoint newKeyPoint;
+                            newKeyPoint.pt = cv::Point2f(keyptsptr->pt);
+                            newKeyPoint.size = 1;
+                            keypts_roi.push_back(newKeyPoint);
+                        }
+                    }
+                    keypoints = keypts_roi;
+                    std::cout << "ROI size= " << keypoints.size()<<" keypoints"<<std::endl;
+                }
 }
 ```
 ### 3. Descriptors
