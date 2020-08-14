@@ -5,16 +5,14 @@
 #### MP.1 Data Buffer Optimization
 * Implement a vector for dataBuffer objects whose size does not exceed a limit (e.g. 2 elements). 
 * This can be achieved by pushing in new elements on one end and removing elements on the other end.
-* Solution: Lines 40 ~ 43 at `MidTermProject_Camera_Student.cpp`
+* Solution: Lines 119 ~ 123 at `MidTermProject_Camera_Student.cpp`
 ```c++
-// ...add start: MP.1 Data Buffer Optimization
  if( dataBuffer.size()+1>dataBufferSize)
 {
-          dataBuffer.erase(dataBuffer.begin());
-          std::cout<<"Erasing and replacing ring databuffer of size 		"<<dataBufferSize<<"Done!"<<std::endl;
-                }
-                dataBuffer.push_back(frame);
-// ...add end: MP.1 Data Buffer Optimization
+	dataBuffer.erase(dataBuffer.begin());
+        std::cout<<"Erasing and replacing ring databuffer of size"<<dataBufferSize<<"Done!"<<std::endl;
+}
+dataBuffer.push_back(frame);
 ```
 * Solution code: Lines 120 ~ 130 at `MidTermProject_Camera_Student.cpp`
 ```c++
