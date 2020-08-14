@@ -21,28 +21,27 @@ dataBuffer.push_back(frame);
 
 #### MP.2 Keypoint Detection
 * Implement detectors HARRIS, FAST, BRISK, ORB, AKAZE, and SIFT and make them selectable by setting a string accordingly.
-* Solution code: Lines 154 ~ 173 at `MidTermProject_Camera_Student.cpp`
+* Solution code: Lines 138 ~ 154 at `MidTermProject_Camera_Student.cpp`
 ```c++
-// ...add start: MP.2 Keypoint Detection
-// detectorType = HARRIS
+
+if (detectorType.compare("SHITOMASI") == 0)
+{
+    detKeypointsShiTomasi(keypoints, imgGray, false);
+}
+            
 else if (detectorType.compare("HARRIS") == 0) 
 {
     detKeypointsHarris(keypoints, imgGray, false);
 }
-// Modern detector types, detectorType = FAST, BRISK, ORB, AKAZE, SIFT
-else if (detectorType.compare("FAST")  == 0 ||
-        detectorType.compare("BRISK") == 0 ||
-        detectorType.compare("ORB")   == 0 ||
-        detectorType.compare("AKAZE") == 0 ||
-        detectorType.compare("SIFT")  == 0)
-{
-    detKeypointsModern(keypoints, imgGray, detectorType, false);
-}
+
+//modern detectors 
+else if (detectorType.compare("FAST")  == 0 || detectorType.compare("BRISK") == 0 ||detectorType.compare("ORB")   == 0 || detectorType.compare("AKAZE") == 0 || detectorType.compare("SIFT")  == 0){
+                   detKeypointsModern(keypoints,imgGray,detectorType,false);}
+                
 else
 {
-    throw invalid_argument(detectorType + " is not a valid detectorType. Try SHITOMASI, HARRIS, FAST, BRISK, ORB, AKAZE, SIFT.");
+	 throw std::invalid_argument("pls. enter correct detector type");
 }
-// ...add end: MP.2 Keypoint Detection
 ```
 * Solution code: Lines 162 ~ 285 at `matching2D_Student.cpp`
 ```c++
