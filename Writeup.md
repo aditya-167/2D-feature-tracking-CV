@@ -21,7 +21,7 @@ dataBuffer.push_back(frame);
 
 #### MP.2 Keypoint Detection
 * Implement detectors HARRIS, FAST, BRISK, ORB, AKAZE, and SIFT and make them selectable by setting a string accordingly.
-* Solution code: Lines 138 ~ 154 at `MidTermProject_Camera_Student.cpp`
+* Solution : Lines 138 ~ 154 at `MidTermProject_Camera_Student.cpp`
 ```c++
 
 if (detectorType.compare("SHITOMASI") == 0)
@@ -43,9 +43,9 @@ else
 	 throw std::invalid_argument("pls. enter correct detector type");
 }
 ```
-* Solution code: Lines 162 ~ 285 at `matching2D_Student.cpp`
+* Solution : Lines 162 ~ 285 at `matching2D_Student.cpp`
 ```c++
-// ...add start: MP.2 Keypoint Detection
+
 // detectorType = HARRIS
 void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis)
 {
@@ -168,12 +168,11 @@ void detKeypointsModern(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, std:
         cv::waitKey(0);
     }
 }
-// ...add end: MP.2 Keypoint Detection
 ```
 
 #### MP.3 Keypoint Removal
 * Remove all keypoints outside of a pre-defined rectangle and only use the keypoints within the rectangle for further processing.
-* Solution code: Lines 183 ~ 205 at `MidTermProject_Camera_Student.cpp`
+* Solution code: Lines 105 ~ 264 at `MidTermProject_Camera_Student.cpp`
 ```c++
 // ...add start: MP.3 Keypoint Removal
 vector<cv::KeyPoint>::iterator keypoint;
