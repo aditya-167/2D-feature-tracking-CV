@@ -35,7 +35,7 @@ int main(int argc, const char *argv[])
     int imgFillWidth = 4;  // no. of digits which make up the file index (e.g. img-0001.png)
 
     // misc
-    int dataBufferSize = 2;       // no. of images which are held in memory (ring buffer) at the same time
+    int dataBufferSize = 3;       // no. of images which are held in memory (ring buffer) at the same time
     vector<DataFrame> dataBuffer; // list of data frames which are held in memory at the same time
     bool bVis = false;            // visualize results
 
@@ -51,7 +51,7 @@ int main(int argc, const char *argv[])
     matchedKepointsCSV.open ("../AlgorithmComparision/Matched_Keypoints.csv");
 
     ofstream timeLogCSV;
-    timeLogCSV.open ("../Log_Time.csv");
+    timeLogCSV.open ("../AlgorithmComparision/Log_Time.csv");
 
 
     //Note : Selecting each and every combination of Descriptors and mathers is cumbersome for logging values
@@ -271,7 +271,7 @@ int main(int argc, const char *argv[])
                     std::cout << "#4 : MATCH KEYPOINT DESCRIPTORS done" << std::endl;
 
                     // visualize matches between current and previous image
-                    bVis = true;
+                    bVis = false;
                     if (bVis)
                     {
                         cv::Mat matchImg = ((dataBuffer.end() - 1)->cameraImg).clone();

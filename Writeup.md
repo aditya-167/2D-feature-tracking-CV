@@ -201,9 +201,10 @@ bool bFocusOnVehicle = true;
 
 #### MP.4 Keypoint Descriptors
 * Implement descriptors BRIEF, ORB, FREAK, AKAZE and SIFT and make them selectable by setting a string accordingly.
-* Solution code: Lines 262 ~ 272 at `MidTermProject_Camera_Student.cpp`
+* Solution code: Lines 240 ~ 249
+ at `MidTermProject_Camera_Student.cpp`
 ```c++
-//.. add start: MP.4 Keypoint Descriptors
+
 string descriptorType;
 if (descriptorType.compare("SIFT") == 0) 
 {
@@ -212,10 +213,9 @@ if (descriptorType.compare("SIFT") == 0)
 else
 {
     descriptorType == "DES_BINARY";
-}                    
-//.. add end: MP.4 Keypoint Descriptors     
+}                      
 ```
-* Solution code: In function `descKeypoints`, Lines 87 ~ 112 at `matching2D_Student.cpp`
+* Solution code: In function `descKeypoints`, Lines 63 ~ 95 at `matching2D_Student.cpp`
 ```c++
 // ...add start: MP.4 Keypoint Descriptors
 else if(descriptorType.compare("BRIEF") == 0)
@@ -242,23 +242,13 @@ else
 {
     throw invalid_argument( "The input method is not supported. Try BRIEF, BRISK, ORB, AKAZE, FREAK, SIFT." );
 }
-// ...add end: MP.4 Keypoint Descriptors
 ```
 
 #### MP.5 Descriptor Matching
 * Implement FLANN matching as well as k-nearest neighbor selection. 
 * Both methods must be selectable using the respective strings in the main function.
-* Solution code: In function `matchDescriptors`, Lines 14 ~ 45 at `matching2D_Student.cpp`
+* Solution code: In function `matchDescriptors`, Lines 14 ~ 30 at `matching2D_Student.cpp`
 ```c++
-/*
-if (matcherType.compare("MAT_BF") == 0)
-{
-    int normType = cv::NORM_HAMMING;
-    matcher = cv::BFMatcher::create(normType, crossCheck);
-}
-*/
-
-// ...add start: MP.5 Descriptor Matching
 if (matcherType.compare("MAT_BF") == 0)
 {
     int normType = cv::NORM_L2;
@@ -281,22 +271,20 @@ else if (matcherType.compare("MAT_FLANN") == 0)
 
     matcher = cv::FlannBasedMatcher::create();              
 }
-// ...add end: MP.5 Descriptor Matching
 ```
 #### MP.6 Descriptor Distance Ratio
 * Use the K-Nearest-Neighbor matching to implement the descriptor distance ratio test, which looks at the ratio of best vs. second-best match to decide whether to keep an associated pair of keypoints.
-* Solution code: Lines 274 ~ 276 at `MidTermProject_Camera_Student.cpp`
+* Solution code: Lines 249 at `MidTermProject_Camera_Student.cpp`
 ```c++
-//.. modified start: MP.6 Descriptor Distance Ratio
+
 string selectorType = "SEL_KNN";       // SEL_NN, SEL_KNN
-//.. modified end: MP.6 Descriptor Distance Ratio
 ```
-* Solution code: In function `matchDescriptors`, Lines 53 ~ 70 at `matching2D_Student.cpp`
+* Solution code: In function `matchDescriptors`, Lines 39 ~ 54 at `matching2D_Student.cpp`
 ```
 else if (selectorType.compare("SEL_KNN") == 0)
 { // k nearest neighbors (k=2)
 
-    // ...add start: MP.6 Descriptor Distance Ratio
+
     vector<vector<cv::DMatch>> knn_matches;
     matcher->knnMatch(descSource, descRef, knn_matches, 2);
 
@@ -309,7 +297,7 @@ else if (selectorType.compare("SEL_KNN") == 0)
         }                
     }
     cout << "# keypoints removed = " << knn_matches.size() - matches.size() << endl;
-    // ...add end: MP.6 Descriptor Distance Ratio
+
 }
 ```
 
@@ -318,7 +306,7 @@ else if (selectorType.compare("SEL_KNN") == 0)
 #### MP.7 Performance Evaluation 1
 * Count the number of keypoints on the preceding vehicle for all 10 images and take note of the distribution of their neighborhood size. 
 * Do this for all the detectors you have implemented.
-* Solution Result: please check `MP_7_Counts_Keypoints.csv` file [CSV file](https://github.com/studian/SFND_P3_2D_Feature_Tracking/MP_7_Counts_Keypoints.csv).
+* Solution Result: please check `AlgorithmComparision/Keypoints.csv` file [CSV file](https://github.com/aditya-167/2D-feature-tracking-CV/blob/master/AlgorithmComparision/Keypoints.csv).
 
 DETECTOR  | Number of keypoints
 --------  | -------------------
@@ -336,132 +324,124 @@ FAST detector has the bigest amount of keypoints.
 #### MP.8 Performance Evaluation 2
 * Count the number of matched keypoints for all 10 images using all possible combinations of detectors and descriptors. 
 * In the matching step, the BF approach is used with the descriptor distance ratio set to 0.8.
-* Solution Result: please check `MP_8_Counts_Matched_Keypoints.csv` file [CSV file](https://github.com/studian/SFND_P3_2D_Feature_Tracking/MP_8_Counts_Matched_Keypoints.csv).
+* Solution Result: please check `AlgorithmComparision/Matched_Keypoints.csv` file [CSV file](https://github.com/aditya-167/2D-feature-tracking-CV/blob/master/AlgorithmComparision/Matched_Keypoints.csv).
 
 #### MP.9 Performance Evaluation 3
 * Log the time it takes for keypoint detection and descriptor extraction. 
 * The results must be entered into a spreadsheet and based on this data, the TOP3 detector / descriptor combinations must be recommended as the best choice for our purpose of detecting keypoints on vehicles.
-* Solution Result: please check `MP_9_Log_Time.csv` file [CSV file](https://github.com/studian/SFND_P3_2D_Feature_Tracking/MP_9_Log_Time.csv).
+* Solution Result: please check `AlgorithmComparision/Log_time.csv` file [CSV file](https://github.com/studian/SFND_P3_2D_Feature_Tracking/MP_9_Log_Time.csv).
 
-Considering `MP_8_Counts_Matched_Keypoints.csv` and `MP_9_Log_Time.csv` The TOP3 detector / descriptor combinations as the best choice for our purpose of detecting keypoints on vehicles are:
+Considering `AlgorithmComparision/Matched_Keypoints.csv.csv` and `AlgorithmComparision/Log_Time.csv` The TOP3 detector / descriptor combinations as the best choice for our purpose of detecting keypoints on vehicles are:
 
 Rank  |  Detector/Descriptor  | The Average Number of Keypoints | Average Time
 ------|---------------------- | --------------------------------| --------
-1st   |FAST/BRIEF             | 242 keypoints                   |  8.26 ms
-2nd   |FAST/ORB               | 229 keypoints                   |  8.25 ms 
-3rd   |FAST/SIFT              | 247 keypoints                   | 17.73 ms
+1st   |FAST/BRIEF             | 242 keypoints                   |  7.22 ms
+2nd   |FAST/ORB               | 229 keypoints                   |  7.45 ms 
+3rd   |FAST/SIFT              | 247 keypoints                   |  15.38 ms
 
 ---
-* Solution code of `MP.7`, `MP.8`, and `MP.9`: Lines 48 ~ 100 at `MidTermProject_Camera_Student.cpp`
+* Solution code of `MP.7`, `MP.8`, and `MP.9`: Lines 44 ~ 91 at `MidTermProject_Camera_Student.cpp`
 ```c++
-/* MAIN LOOP OVER ALL IMAGES */
+ vector<std::string> detectortype = {"HARRIS", "SHITOMASI", "FAST", "ORB", "AKAZE", "BRISK", "SIFT"};
+    vector<std::string> descriptortype = {"BRISK", "SIFT", "ORB", "FREAK", "BRIEF", "AKAZE"};
 
-//.. add start: MP.7, MP.8, and MP.9
-vector<string> detector_type_names = {"SHITOMASI", "HARRIS", "FAST", "BRISK", "ORB", "AKAZE", "SIFT"};
-vector<string> descriptor_type_names = {"BRISK", "BRIEF", "ORB", "FREAK", "AKAZE", "SIFT"};
+    ofstream kpsaveFileCSV;
+    kpsaveFileCSV.open ("../AlgorithmComparision/Keypoints.csv");
 
-ofstream detector_file;
-detector_file.open ("../MP_7_Counts_Keypoints.csv");
+    ofstream matchedKepointsCSV;
+    matchedKepointsCSV.open ("../AlgorithmComparision/Matched_Keypoints.csv");
 
-ofstream det_des_matches;
-det_des_matches.open ("../MP_8_Counts_Matched_Keypoints.csv");
+    ofstream timeLogCSV;
+    timeLogCSV.open ("../AlgorithmComparision/Log_Time.csv");
 
-ofstream det_des_time;
-det_des_time.open ("../MP_9_Log_Time.csv");    
 
-for(auto detector_type_name:detector_type_names) // start loop detector_types
-{
-    bool write_detector = false;
+    //Note : Selecting each and every combination of Descriptors and mathers is cumbersome for logging values
+    // hence I have looped through all detector types and its all possible descriptors and saved the result in csv file.
 
-    for(auto descriptor_type_name:descriptor_type_names) // start loop descriptor_types
+    for (auto i_detector:detectortype) //loop for every detector types
     {
-        if(detector_type_name.compare("AKAZE")!=0 && descriptor_type_name.compare("AKAZE")==0)
-            continue;
+        bool write = false;
 
-        if(detector_type_name.compare("AKAZE")==0 && descriptor_type_name.compare("AKAZE")==0)
-            continue;    
+        for(auto i_descriptor:descriptortype)// start loop descriptor_types
+        { 
+            //class implementing AKAZE keypoint detecot and descriptor can only be used with KAZE/AKAZE keypoints
+            if(i_detector.compare("AKAZE")!=0 && i_descriptor.compare("AKAZE")==0)
+                continue;
 
-        dataBuffer.clear();
+            if(i_detector.compare("AKAZE")==0 && i_descriptor.compare("AKAZE")==0)
+                continue; 
 
-        cout << "===================================================================" << endl;
-        cout << "Detector Type: " << detector_type_name << "   Descriptor Type: " << descriptor_type_name << endl;
-        cout << "===================================================================" << endl;
 
-        //.. add start: MP.7 Performance Evaluation 1
-        // Write to detector keypoints number file
-        if(!write_detector)
-        {
-            detector_file << detector_type_name;
-        }                
-        //.. add end: MP.7 Performance Evaluation 1
+            dataBuffer.clear();
 
-        //.. add start: MP.8 Performance Evaluation 2
-        det_des_matches << detector_type_name << "_" << descriptor_type_name;
-        //.. add end: MP.8 Performance Evaluation 2
+            std::cout << "*************************************************************************" << std::endl;
+            std::cout << "Detector Type: "<< i_detector <<" Descriptor Type:" << i_descriptor <<std::endl;
+            std::cout << "*************************************************************************" << std::endl;
 
-        //.. add start: MP.9 Performance Evaluation 3
-        det_des_time << detector_type_name << "_" << descriptor_type_name;
-        //.. add end: MP.9 Performance Evaluation 3
-
-        //.. add end: MP.7, MP.8, and MP.9
-
-        for (size_t imgIndex = 0; imgIndex <= imgEndIndex - imgStartIndex; imgIndex++)
-        {
-```
-* Solution code of `MP.7`, `MP.8`, and `MP.9`: Lines 142 ~ 144 at `MidTermProject_Camera_Student.cpp`
-```c++
-// ...modified start: MP.7, MP.8, MP.9
-string detectorType = detector_type_name; //"SHITOMASI", "HARRIS", "FAST", "BRISK", "ORB", "AKAZE", "SIFT"
-// ...modified end: MP.7, MP.8, MP.9
-```
-* Solution code of `MP.7`: Lines 207 ~ 212 at `MidTermProject_Camera_Student.cpp`
-```c++
-//.. add start: MP.7 Performance Evaluation 1
-if(!write_detector)
-{
-    detector_file  << ", " << keypoints.size();
-}                
-//.. add end: MP.7 Performance Evaluation 1
-```
-* Solution code of `MP.7`, `MP.8`, and `MP.9`: Lines 242 ~ 244 at `MidTermProject_Camera_Student.cpp`
-```c++
-// ...modified start: MP.7, MP.8, MP.9
-string descriptorType = descriptor_type_name; // BRIEF, ORB, FREAK, AKAZE, SIFT
-// ...modified end: MP.7, MP.8, MP.9
-```
-* Solution code of `MP.8` and `MP.9`: Lines 291 ~ 298 at `MidTermProject_Camera_Student.cpp`
-```c++
-//.. add start: MP.8 Performance Evaluation 2
-det_des_matches << ", " << matches.size();
-//.. add end: MP.8 Performance Evaluation 2
-
-//.. add start: MP.9 Performance Evaluation 3
-t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-det_des_time << ", " << 1000*t;
-//.. add end: MP.9 Performance Evaluation 3
-```
-* Solution code of `MP.7`, `MP.8`, and `MP.9`: Lines 322 ~ 343 at `MidTermProject_Camera_Student.cpp`
-```c++
-           } // eof loop over all images
-
-            //.. add start: MP.7, MP.8, and MP.9
-            if(!write_detector)
-            {
-                detector_file << endl;   
+            //save performance evaluation 1 MP.7, keypoints of each detector to the csv file
+            if (!write){
+                kpsaveFileCSV<<i_detector;
             }
+
+            // save MP.8 Performance Evaluaion 2
+            matchedKepointsCSV<<i_detector<<"+"<<i_descriptor;
+
+            //save MP.9 Performance Evaluaion 3, Log the time taken by detectors and descriptors
+            timeLogCSV<<i_detector<<"+"<<i_descriptor;
+
+            /* MAIN LOOP OVER ALL IMAGES */
+```
+* Solution code of `MP.7`, `MP.8`, and `MP.9`: Lines 132 at 
+
+`MidTermProject_Camera_Student.cpp`
+```c++
+string detectorType = i_detector; //"SHITOMASI", "HARRIS", "FAST", "BRISK", "ORB", "AKAZE", "SIFT"
+```
+
+* Solution code of `MP.7`: Lines 186 at `MidTermProject_Camera_Student.cpp`
+```c++
+
+ if(!write){
+                    kpsaveFileCSV<<", "<<keypoints.size();
+                }             
+```
+
+* Solution code of `MP.7`, `MP.8`, and `MP.9`: Lines 214 at `MidTermProject_Camera_Student.cpp`
+
+```c++
+string descriptorType = i_descriptor; // BRIEF, ORB, FREAK, AKAZE, SIFT
+```
+
+* Solution code of `MP.8` and `MP.9`: Lines 265 ~ 269 at `MidTermProject_Camera_Student.cpp`
+
+```c++
+matchedKepointsCSV << ", " << matches.size();
+
+time_taken = ((double)cv::getTickCount() - time_taken) / cv::getTickFrequency();
+matchedKepointsCSV << ", " << 1000*time_taken;
+
+```
+* Solution code of `MP.7`, `MP.8`, and `MP.9`: Lines 296 ~ 314 at `MidTermProject_Camera_Student.cpp`
+```c++
+           if(!write)
+            {
+                kpsaveFileCSV << std::endl;   
+            }
+
+            write = true;
+            matchedKepointsCSV << std::endl;
+            timeLogCSV << std::endl;
+
+
+
             
-            write_detector = true;
+        }// eof loop over descriptor types
+    }//eof loop over detecrtor types
 
-            det_des_matches << endl;
-            det_des_time << endl;
-        }// eof loop over descriptor_types
-    }// eof loop over detector_types
-
-    detector_file.close();
-    det_des_matches.close();
-    det_des_time.close();
-    //.. add end: MP.7, MP.8, and MP.9
-
+    //close the csv files
+    kpsaveFileCSV.close();
+    matchedKepointsCSV.close();
+    timeLogCSV.close();
     return 0;
 }
 ```

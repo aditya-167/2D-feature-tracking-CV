@@ -14,8 +14,10 @@ void matchDescriptors(std::vector<cv::KeyPoint> &kPtsSource, std::vector<cv::Key
     if (matcherType.compare("MAT_BF") == 0)
     {
         int normType = cv::NORM_L2;
-        if(descriptorType.compare("DES_BINARY")==0)
+        if(descriptorType.compare("DES_BINARY")==0){
             normType = cv::NORM_HAMMING;
+        }
+            
         matcher = cv::BFMatcher::create(normType, crossCheck);
         cout << "\nBF matching cross-check=" << crossCheck;
     }
